@@ -47,3 +47,19 @@ class KNN(object):
         vectorUnderTest = self.img2vector('testDigits/%s' % fileNameStr)
         classifierResult = self.classify0(vectorUnderTest, trainingMat, hwLabels, 3)
         print "the classifier came back with: %d, the real answer is: %d" % (classifierResult, classNumStr)
+
+    def testHandwritingClassTest(self, path):
+        hwLabels = []
+        trainingFileList = listdir('trainingDigits')  # load the training set
+        m = len(trainingFileList)
+        trainingMat = np.zeros((m, 1024))
+        # 读取所有的训练数据
+        for i in range(m):
+            fileNameStr = trainingFileList[i]
+            fileStr = fileNameStr.split('.')[0]  # take off .txt
+            classNumStr = int(fileStr.split('_')[0])
+            hwLabels.append(classNumStr)
+            trainingMat[i, :] = self.img2vector('trainingDigits/%s' % fileNameStr)
+        vectorUnderTest = self.img2vector(path)
+        classifierResult = self.classify0(vectorUnderTest, trainingMat, hwLabels, 3)
+        print "the classifier came back with: %d" % classifierResult
